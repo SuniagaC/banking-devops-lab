@@ -1,16 +1,32 @@
 pipeline {
     agent any
 
+    environment {
+        DOCKER_IMAGE = "TU_USUARIO_DOCKERHUB/banking-app:latest"
+    }
+
     stages {
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t banking-app:latest .'
+                sh 'docker build -t $DOCKER_IMAGE .'
             }
         }
 
-        stage('Import Image to k3s') {
+        stage('Docker Hub Login') {
             steps {
-                sh 'docker save banking-app:latest | k3s ctr images import -'
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+                    sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
+                }
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                sh 'docker push $DOCKER_IMAGE'
             }
         }
 

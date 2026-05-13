@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: banking-app
-          image: banking-app:latest
-          imagePullPolicy: Never
+          image: carlossuni/banking-app:latest
+          imagePullPolicy: Always
           ports:
           - containerPort: 5000
