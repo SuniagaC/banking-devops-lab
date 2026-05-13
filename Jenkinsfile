@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "TU_USUARIO_DOCKERHUB/banking-app:latest"
+        DOCKER_IMAGE = "carlossuni/banking-app:latest"
     }
 
     stages {
