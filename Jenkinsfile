@@ -6,18 +6,14 @@ pipeline {
     }
 
     stages {
-    
-    	stage('Run Tests') {
-    	    steps {
-    	        sh '''
-    	        docker run --rm \
-    	          -v "$WORKSPACE":/app \
-    	          -w /app \
-    	          python:3.11-slim \
-    	          sh -c "pip install -r requirements.txt && pytest"
-    	        '''
-    	    }
-    	}
+
+        stage('Run Tests') {
+            steps {
+                sh 'docker build -t banking-app-test .'
+                sh 'docker run --rm banking-app-test pytest'
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
                 sh 'docker build -t $DOCKER_IMAGE .'
