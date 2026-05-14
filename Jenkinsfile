@@ -6,6 +6,13 @@ pipeline {
     }
 
     stages {
+    
+    	stage('Run Tests') {
+    	    steps {
+    	        sh 'pip install -r requirements.txt'
+    	        sh 'pytest'
+    	    }
+    	}
         stage('Build Docker Image') {
             steps {
                 sh 'docker build -t $DOCKER_IMAGE .'
